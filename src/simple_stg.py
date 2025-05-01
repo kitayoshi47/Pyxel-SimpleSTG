@@ -1,5 +1,6 @@
 import pyxel
-import sys_fps as fps
+import sys_fps
+import sys_save
 import stg_player as player
 import stg_enemy as enemy
 
@@ -32,11 +33,11 @@ class App:
     # 初期化
     # --------------------
     def __init__(self):
-        self.fps    = fps.CFps()
-        self.scene  = SCENE_STATE.BOOT
-        self.player = player.CPlayer(100, 100)
-
         pyxel.init(SCREEN_WIDTH, SCREEN_HEIGHT, title=APP_TITLE, fps=60)
+        self.fps       = sys_fps.CFps()
+        self.save_data = sys_save.CSaveData("Kitayochi", "simple_stg")
+        self.scene     = SCENE_STATE.BOOT
+        self.player    = player.CPlayer(100, 100)
         pyxel.run(self.update, self.draw)
 
     # --------------------
@@ -69,6 +70,8 @@ class App:
     # 更新 [TITLE]
     # --------------------
     def update_scene_title(self):
+        if pyxel.btnp(pyxel.KEY_S):
+            self.save_data.save("")
         if pyxel.btnp(pyxel.KEY_RETURN) or pyxel.btnp(pyxel.GAMEPAD1_BUTTON_X):
             self.scene = SCENE_STATE.PLAYING
 
