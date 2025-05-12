@@ -1,4 +1,3 @@
-import pyxel
 import os
 import json
 import base64
@@ -49,9 +48,9 @@ class CSaveData:
     # --------------------
     # 初期化
     # --------------------
-    def __init__(self, vendor_name, app_name):
-        self.save_name  = app_name + ".pyxapp_save"
-        self.user_dir   = pyxel.user_data_dir(vendor_name, app_name)
+    def __init__(self, save_name, save_dir):
+        self.save_name  = save_name + ".sav"
+        self.save_dir   = save_dir
         self.is_desktop = False
         self.is_browser = False
         if is_web_launcher:
@@ -63,9 +62,6 @@ class CSaveData:
             self.is_desktop = self.sys_name == "Windows" or self.sys_name == "Darwin" or self.sys_name == "Linux"
             if self.sys_name.find("Mozilla") == -1:
                 self.is_browser = False
-        print(self.is_desktop)
-        print(self.is_browser)
-        print(self.sys_name)
 
     def is_run_desktop(self):
         return self.is_desktop
@@ -93,7 +89,7 @@ class CSaveData:
         else:
             # デスクトップ版: ファイルに保存
             encoded_data = encode_data_for_storage(data_string)
-            file_path = self.user_dir + self.save_name
+            file_path = self.save_dir + self.save_name
             try:
                 print(f"Game data as string would be saved to {file_path} on desktop.")
                 current_dir = os.path.dirname(__file__)
@@ -121,7 +117,7 @@ class CSaveData:
                 print("No game data found in LocalStorage.")
         else:
             # デスクトップ版: ファイルから読み込み
-            file_path = self.user_dir + self.save_name
+            file_path = self.save_dir + self.save_name
             try:
                 print(f"Game data as string would be loaded from {file_path} on desktop.")
                 current_dir = os.path.dirname(__file__)
