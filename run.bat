@@ -1,5 +1,4 @@
 @echo off
 pushd "%~dp0"
-pyxel run src/simple_stg.py
+pyxel run src/main.py
 popd
-pause
